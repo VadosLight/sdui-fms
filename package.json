@@ -21,6 +21,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.0.0",
+    "react-resizable-panels": "^2.1.7",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {

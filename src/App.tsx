@@ -12,6 +12,7 @@ import { DndProvider } from "react-dnd/dist/core/DndProvider";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDrag, useDrop } from "react-dnd";
 import { customAlphabet } from "nanoid";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1 } },
@@ -28,8 +29,10 @@ const getDefaultsByType = (type: ComponentName) => {
       return {
         type: "BannerWrapper",
         content: {
+          padding: 16,
           content: {
             type: "ButtonView",
+
             content: {
               text: "Кнопка внутри баннера, надо вместо неё сделать дропзону",
             },
@@ -62,6 +65,7 @@ const ComponentsShowcase = () => {
         gap: 8,
         backgroundColor: "white",
         padding: 16,
+        height: "100%",
       }}
     >
       <h2 style={{ color: "black" }}>Набор компонентов</h2>
@@ -73,8 +77,12 @@ const ComponentsShowcase = () => {
         }
 
         return (
-          // @ts-expect-error любой зарегистрированный компонент
-          <DraggableComponent children={<Component {...props} />} type={type} />
+          <DraggableComponent
+            // @ts-expect-error любой зарегистрированный компонент
+            children={<Component {...props} />}
+            type={type as ComponentName}
+            key={type}
+          />
         );
       })}
     </aside>
@@ -140,9 +148,63 @@ const DropZone = ({
     updateScreen(newScreen);
   };
 
+  const handleComponentDrop = (elementType: ComponentName, id: string) => {
+    const newContentValues = getDefaultsByType(elementType)?.content;
+    if (!newContentValues) return;
+
+    const newScreen = { ...screen };
+
+    // Рекурсивно ищем элемент по id и обновляем его `content.content`, сохраняя структуру
+    const updateComponentContent = (items: LayoutElement[]) => {
+      return items.map((item) => {
+        if (item.id === id) {
+          // Если компонент - BannerWrapper, заменяем только `content.content`
+          if (item.type === "BannerWrapper" && "content" in item.content) {
+            return {
+              ...item,
+              content: {
+                ...item.content,
+                content: {
+                  type: elementType,
+                  content: { ...newContentValues }, // ✅ Меняем только `content.content`
+                },
+              },
+            };
+          }
+          // Для обычных компонентов обновляем content как раньше
+          return {
+            ...item,
+            content: { ...item.content, ...newContentValues },
+          };
+        }
+        // Рекурсивно обрабатываем вложенные компоненты
+        if ("content" in item && "items" in item.content) {
+          return {
+            ...item,
+            content: {
+              ...item.content,
+              items: updateComponentContent(item.content.items),
+            },
+          };
+        }
+        return item;
+      });
+    };
+
+    newScreen.content.items = updateComponentContent(newScreen.content.items);
+
+    updateScreen(newScreen);
+  };
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "COMPONENT",
-    drop: (item) => handleDrop("content.items", item),
+    drop: (item, monitor) => {
+      if (monitor.didDrop()) {
+        return;
+      }
+
+      handleDrop("content.items", item);
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -157,7 +219,11 @@ const DropZone = ({
         overflowY: "auto",
       }}
     >
-      <BaseScreen screen={screen} />
+      <BaseScreen
+        screen={screen}
+        editMode
+        onComponentDrop={handleComponentDrop}
+      />
     </div>
   );
 };
@@ -170,7 +236,7 @@ function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <QueryClientProvider client={queryClient}>
-        <div
+        {/* <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr 1fr",
@@ -179,17 +245,36 @@ function App() {
             padding: 32,
             boxSizing: "border-box",
           }}
+        > */}
+        <PanelGroup
+          direction="horizontal"
+          autoSaveId={"sdui"}
+          style={{
+            height: "100dvh",
+            padding: 32,
+            boxSizing: "border-box",
+            gap: 4,
+          }}
         >
-          <ComponentsShowcase />
+          <Panel defaultSize={30} minSize={20}>
+            <ComponentsShowcase />
+          </Panel>
+          <PanelResizeHandle />
+
           {/* <BaseScreen designSystem="AIO" screen={screen} /> */}
-          <DropZone screen={screen} updateScreen={updateScreen} />
-          <aside>
+          <Panel defaultSize={30} minSize={20}>
+            <DropZone screen={screen} updateScreen={updateScreen} />
+          </Panel>
+          <PanelResizeHandle />
+
+          <Panel minSize={20}>
             <textarea
               value={JSON.stringify(screen, null, 2)}
               style={{ width: "100%", height: "100%", resize: "none" }}
             ></textarea>
-          </aside>
-        </div>
+          </Panel>
+        </PanelGroup>
+        {/* </div> */}
       </QueryClientProvider>
     </DndProvider>
   );

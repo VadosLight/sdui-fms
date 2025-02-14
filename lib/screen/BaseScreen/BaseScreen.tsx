@@ -1,26 +1,36 @@
 import { Suspense } from "react";
 import { DEFAULT_DS } from "../../utils/constants/defaults";
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
-import { renderComponent } from "../../utils/renderComponent";
+import {
+  renderComponent,
+  RenderComponentOptions,
+} from "../../utils/renderComponent";
 import styles from "./BaseScreen.module.css"; // ✅ Импортируем стили
 
 export type BaseScreenProps = {
   screen: SDUIScreen;
-  designSystem?: string;
-};
+} & RenderComponentOptions;
 
 export const BaseScreen = (props: BaseScreenProps) => {
-  const { designSystem = DEFAULT_DS, screen } = props;
+  const {
+    designSystem = DEFAULT_DS,
+    screen,
+    editMode,
+    onComponentDrop,
+  } = props;
 
   return (
     <div className={styles.baseScreenContainer}>
       <Suspense fallback={<div>Loading...</div>}>
         <header className={styles.header}>Header</header>{" "}
-        {/* ✅ Фиксированный заголовок */}
         <main className={styles.mainContent}>
           {screen?.content.type === "list" &&
             screen.content.items.map((element) => {
-              return renderComponent(element, designSystem);
+              return renderComponent(element, {
+                designSystem,
+                editMode,
+                onComponentDrop,
+              });
             })}
         </main>
         <footer className={styles.footer}>Footer</footer>{" "}
@@ -31,7 +41,6 @@ export const BaseScreen = (props: BaseScreenProps) => {
 
 // const getScreen = async (endpoint: string): Promise<SDUIScreen> => {
 //   // const response =  axios.get(endpoint);
-//   console.log({ endpoint });
 
 //   const response: SDUIScreen = {
 //     content: {

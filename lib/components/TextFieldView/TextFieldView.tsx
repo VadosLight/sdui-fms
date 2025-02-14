@@ -5,5 +5,14 @@ export const TextFieldView = (props: ComponentProps<"TextFieldView">) => {
   const { content, id } = props;
   const { text, title } = content;
 
-  return <InputMobile value={text} name={id} label={title} block></InputMobile>;
+  return (
+    <InputMobile
+      defaultValue={text}
+      value={text}
+      name={id}
+      label={title}
+      block
+      onChange={() => {}}
+    ></InputMobile>
+  );
 };
