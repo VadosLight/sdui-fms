@@ -1,8 +1,9 @@
 import { ComponentProps } from "@model/types/utils/ComponentProps";
+import { InputMobile } from "@alfalab/core-components/input/mobile";
 
 export const TextFieldView = (props: ComponentProps<"TextFieldView">) => {
   const { content, id } = props;
-  const { text } = content;
+  const { text, title } = content;
 
-  return <input value={text} name={id}></input>;
+  return <InputMobile value={text} name={id} label={title} block></InputMobile>;
 };

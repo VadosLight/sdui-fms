@@ -11,7 +11,7 @@ import { ComponentProps } from "@model/types/utils/ComponentProps";
 import { DndProvider } from "react-dnd/dist/core/DndProvider";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDrag, useDrop } from "react-dnd";
-import { customAlphabet, nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1 } },
@@ -22,7 +22,7 @@ const getDefaultsByType = (type: ComponentName) => {
     case "ButtonView":
       return {
         type: "ButtonView",
-        content: { enabled: true, size: "large", text: "Some button text" },
+        content: { enabled: true, size: "large", text: "Просто кнопка" },
       } as ComponentProps<"ButtonView">;
     case "BannerWrapper":
       return {
@@ -30,14 +30,20 @@ const getDefaultsByType = (type: ComponentName) => {
         content: {
           content: {
             type: "ButtonView",
-            content: { text: "BannerWrapper+ButtonView" },
+            content: {
+              text: "Кнопка внутри баннера, надо вместо неё сделать дропзону",
+            },
           },
         },
       } as ComponentProps<"BannerWrapper">;
     case "TextFieldView":
       return {
         type: "TextFieldView",
-        content: { text: "TextFieldView" },
+        content: {
+          text: "TextFieldView",
+          title: "Подпись к полю",
+          placeholder: "Плейсхолдер",
+        },
       } as ComponentProps<"TextFieldView">;
   }
 
@@ -53,9 +59,12 @@ const ComponentsShowcase = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        gap: 8,
+        backgroundColor: "white",
+        padding: 16,
       }}
     >
+      <h2 style={{ color: "black" }}>Набор компонентов</h2>
       {componentList.map(([type, Component]) => {
         const props = getDefaultsByType(type as ComponentName);
 
@@ -72,7 +81,6 @@ const ComponentsShowcase = () => {
   );
 };
 
-// 📌 Компонент, который можно перетаскивать
 const DraggableComponent = ({
   type,
   children,
@@ -91,11 +99,13 @@ const DraggableComponent = ({
   return drag(
     <div
       style={{
-        padding: "8px",
+        padding: "16px",
+        borderRadius: "16px",
         marginBottom: "4px",
-        backgroundColor: isDragging ? "#555" : "#222",
-        color: "#fff",
+        backgroundColor: isDragging ? "#00005540" : undefined,
         cursor: "grab",
+        border: "1px solid rgba(0, 0, 0, 0.33)",
+        margin: 8,
       }}
     >
       {children}
@@ -123,6 +133,7 @@ const DropZone = ({
     // Добавляем компонент в screen.content.items
     newScreen.content.items.push({
       id: nanoid(),
+      visible: true,
       ...newComponent,
     });
 
@@ -142,7 +153,7 @@ const DropZone = ({
       style={{
         flex: 1,
         height: "100%",
-        background: isOver ? "#444" : "#333",
+        background: isOver ? "#050" : "white",
         overflowY: "auto",
       }}
     >
