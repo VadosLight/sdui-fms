@@ -1,4 +1,9 @@
 {
-  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "extends": "./tsconfig-app.json",
   "include": ["lib"]
 }
