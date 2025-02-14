@@ -1,8 +1,9 @@
+import { BannerWrapper } from "../../components/BannerWrapper/BannerWrapper";
 import { ButtonView } from "../../components/ButtonView/ButtonView";
 import { TextFieldView } from "../../components/TextFieldView/TextFieldView";
 import { LayoutElementContent } from "./LayoutElementContent";
 
-export type ComponentName = "ButtonView" | "TextFieldView";
+export type ComponentName = "ButtonView" | "TextFieldView" | "BannerWrapper";
 
 type LayoutElementBase = {
   id?: string;
@@ -16,4 +17,5 @@ type NamedLayoutElement<
 
 export type LayoutElement =
   | NamedLayoutElement<"ButtonView", ButtonView>
+  | NamedLayoutElement<"BannerWrapper", BannerWrapper>
   | NamedLayoutElement<"TextFieldView", TextFieldView>;

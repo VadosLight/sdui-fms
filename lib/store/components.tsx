@@ -1,24 +1,27 @@
-import { map } from "nanostores";
+import { deepMap } from "nanostores";
 import { DEFAULT_DS } from "../utils/constants/defaults";
 import { ButtonView } from "@components/ButtonView/ButtonView";
 import React from "react";
 import { ComponentProps } from "@model/types/utils/ComponentProps";
 import { TextFieldView } from "@components/TextFieldView/TextFieldView";
 import { ComponentName } from "@model/types/fms/common/LayoutElement/LayoutElement";
+import { BannerWrapper } from "@components/BannerWrapper/BannerWrapper";
 
 type Element<T extends ComponentName> = React.ElementType<ComponentProps<T>>;
 
 type DesignSystemComponents = {
   ButtonView: Element<"ButtonView">;
+  BannerWrapper: Element<"BannerWrapper">;
   TextFieldView: Element<"TextFieldView">;
 };
 
 type RegisteredComponents = Record<string, DesignSystemComponents>;
 
-export const $components = map<RegisteredComponents>({
+export const $components = deepMap<RegisteredComponents>({
   [DEFAULT_DS]: {
-    ButtonView: (props) => <ButtonView {...props} />,
+    ButtonView: ButtonView,
     TextFieldView: TextFieldView,
+    BannerWrapper: BannerWrapper,
   },
 });
 
@@ -32,4 +35,5 @@ export const registerDesignSystem = (
 registerDesignSystem("PWA", {
   ButtonView: ButtonView,
   TextFieldView: TextFieldView,
+  BannerWrapper: BannerWrapper,
 });

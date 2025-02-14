@@ -1,10 +1,9 @@
 import { ComponentProps } from "@model/types/utils/ComponentProps";
+import styles from "./ButtonView.module.css";
 
 export const ButtonView = (props: ComponentProps<"ButtonView">) => {
-  const { content, type, id, visible } = props;
+  const { content } = props;
   const { text } = content;
 
-  console.log({ content, type, id, visible });
-
-  return <button>{text}</button>;
+  return <button className={styles.button}>{text}</button>;
 };

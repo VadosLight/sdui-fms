@@ -1,0 +1,31 @@
+/* BaseScreen.module.css */
+.baseScreenContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Растягиваем контейнер на всю высоту экрана */
+}
+
+.header {
+    flex-shrink: 0;
+    /* Фиксированный заголовок */
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* Контент занимает оставшееся пространство */
+    overflow-y: auto;
+    /* Прокрутка, если контент длинный */
+}
+
+.footer {
+    flex-shrink: 0;
+    /* Фиксированный футер */
+    background: #222;
+    /* Цвет фона */
+    color: white;
+    /* Цвет текста */
+    text-align: center;
+}
