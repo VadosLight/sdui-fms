@@ -6,7 +6,10 @@ import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { useStore } from "@nanostores/react";
 import { $components } from "@store/components";
 import { DEFAULT_DS } from "../lib/utils/constants/defaults";
-import { ComponentName } from "@model/types/fms/common/LayoutElement/LayoutElement";
+import {
+  ComponentName,
+  LayoutElement,
+} from "@model/types/fms/common/LayoutElement/LayoutElement";
 import { ComponentProps } from "@model/types/utils/ComponentProps";
 import { DndProvider } from "react-dnd/dist/core/DndProvider";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -34,7 +37,7 @@ const getDefaultsByType = (type: ComponentName) => {
             type: "ButtonView",
 
             content: {
-              text: "Кнопка внутри баннера, надо вместо неё сделать дропзону",
+              text: "Кнопка внутри баннера",
             },
           },
         },
@@ -43,7 +46,7 @@ const getDefaultsByType = (type: ComponentName) => {
       return {
         type: "TextFieldView",
         content: {
-          text: "TextFieldView",
+          text: "Текст из TextFieldView",
           title: "Подпись к полю",
           placeholder: "Плейсхолдер",
         },
@@ -121,7 +124,7 @@ const DraggableComponent = ({
   );
 };
 
-/** Используем кдля генерации базового айдишника компонента */
+/** Используем для генерации базового айдишника компонента */
 const nanoid = customAlphabet("1234567890abcdef", 10);
 
 const DropZone = ({
@@ -149,24 +152,92 @@ const DropZone = ({
   };
 
   const handleComponentDrop = (elementType: ComponentName, id: string) => {
+    console.log({ id, elementType });
     const newContentValues = getDefaultsByType(elementType)?.content;
     if (!newContentValues) return;
 
     const newScreen = { ...screen };
 
-    // Рекурсивно ищем элемент по id и обновляем его `content.content`, сохраняя структуру
-    const updateComponentContent = (items: LayoutElement[]) => {
+    // Функция для прохода по первому массиву items
+    const updateComponentContent = (
+      items: LayoutElement[]
+    ): LayoutElement[] => {
+      const recursiveItemReplace = (element: LayoutElement): LayoutElement => {
+        console.log("recursiveItemReplace", { id, element, newContentValues });
+
+        if (element.id !== id) {
+          // если у дочернего элемента есть children
+          if (element.content.content) {
+            return {
+              ...element,
+              content: {
+                ...element.content,
+                content: { ...recursiveItemReplace(element.content.content) },
+              },
+            };
+          }
+
+          return element;
+        }
+
+        return {
+          ...element,
+          content: {
+            content: {
+              ...newContentValues,
+            },
+          },
+        };
+
+        // if (element.id === id) {
+        //   if ("content" in element && typeof element.content === "object") {
+        //     return {
+        //       ...element,
+        //       content: {
+        //         id: nanoid(),
+        //         type: elementType,
+        //         content: {
+        //           ...element.content,
+        //           content: { ...newContentValues },
+        //         },
+        //       },
+        //     };
+        //   }
+
+        //   console.log("recursiveItemReplace-2", { id });
+
+        //   return {
+        //     ...element,
+        //     content: { ...element.content, ...newContentValues },
+        //     id: nanoid(),
+        //   };
+        // }
+
+        // // Если у элемента есть `content`, рекурсивно обрабатываем его
+        // if ("content" in element && typeof element.content === "object") {
+        //   console.log({ element });
+        //   return {
+        //     ...element,
+        //     content: recursiveItemReplace(element.content),
+        //   };
+        // }
+      };
+
       return items.map((item) => {
         if (item.id === id) {
-          // Если компонент - BannerWrapper, заменяем только `content.content`
-          if (item.type === "BannerWrapper" && "content" in item.content) {
+          // Проверяем, содержит ли content вложенный контент
+          if (
+            "content" in item.content &&
+            typeof item.content.content === "object"
+          ) {
             return {
               ...item,
               content: {
                 ...item.content,
                 content: {
+                  id: nanoid(),
                   type: elementType,
-                  content: { ...newContentValues }, // ✅ Меняем только `content.content`
+                  content: { ...newContentValues },
                 },
               },
             };
@@ -175,23 +246,17 @@ const DropZone = ({
           return {
             ...item,
             content: { ...item.content, ...newContentValues },
+            id: nanoid(),
           };
         }
-        // Рекурсивно обрабатываем вложенные компоненты
-        if ("content" in item && "items" in item.content) {
-          return {
-            ...item,
-            content: {
-              ...item.content,
-              items: updateComponentContent(item.content.items),
-            },
-          };
-        }
-        return item;
+
+        return recursiveItemReplace(item);
       });
     };
 
-    newScreen.content.items = updateComponentContent(newScreen.content.items);
+    if (Array.isArray(newScreen.content.items)) {
+      newScreen.content.items = updateComponentContent(newScreen.content.items);
+    }
 
     updateScreen(newScreen);
   };
