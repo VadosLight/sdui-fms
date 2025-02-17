@@ -8,8 +8,6 @@ export const BannerWrapper = (props: ComponentProps<"BannerWrapper">) => {
 
   const { content: element, padding } = content;
 
-  // Используем `useDrop`, только если `editMode === true`
-
   return (
     <Droppable id={id} editMode={editMode} onDrop={onDrop}>
       {(isOver, dropRef) => (
@@ -19,6 +17,7 @@ export const BannerWrapper = (props: ComponentProps<"BannerWrapper">) => {
           backgroundColor="red"
           style={{
             padding,
+            margin: 6,
             border: editMode ? "1px dashed #888" : "none",
             background: isOver ? "#e0e0e0" : "#0000ff10",
             boxShadow: isOver ? "0 0 8px rgba(0, 0, 255, 0.5)" : "none",
