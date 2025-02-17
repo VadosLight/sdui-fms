@@ -21,6 +21,67 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1 } },
 });
 
+const test: SDUIScreen = {
+  content: {
+    type: "list",
+    items: [
+      {
+        id: "15c7bce301",
+        visible: true,
+        type: "BannerWrapper",
+        content: {
+          padding: 4,
+          content: {
+            id: "0fa64fb734",
+            type: "BannerWrapper",
+            content: {
+              content: {
+                type: "BannerWrapper",
+                id: "0fa6ffb734",
+                content: {
+                  padding: 4,
+                  content: {
+                    id: "0fa6ffb724",
+                    type: "ButtonView",
+                    content: { text: "Кнопка " },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        id: "e8c2e8704b",
+        visible: true,
+        type: "BannerWrapper",
+        content: {
+          padding: 4,
+          content: {
+            id: "c67ceb1ab3",
+            type: "BannerWrapper",
+            content: {
+              content: {
+                id: "6ee9bdfd88",
+                type: "BannerWrapper",
+                content: {
+                  padding: 4,
+                  content: {
+                    type: "ButtonView",
+                    content: {
+                      text: "Кнопка внутри баннера",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+};
+
 const getDefaultsByType = (type: ComponentName) => {
   switch (type) {
     case "ButtonView":
@@ -32,7 +93,7 @@ const getDefaultsByType = (type: ComponentName) => {
       return {
         type: "BannerWrapper",
         content: {
-          padding: 16,
+          padding: 4,
           content: {
             type: "ButtonView",
 
@@ -153,7 +214,7 @@ const DropZone = ({
 
   const handleComponentDrop = (elementType: ComponentName, id: string) => {
     console.log({ id, elementType });
-    const newContentValues = getDefaultsByType(elementType)?.content;
+    const newContentValues = getDefaultsByType(elementType);
     if (!newContentValues) return;
 
     const newScreen = { ...screen };
@@ -182,45 +243,11 @@ const DropZone = ({
 
         return {
           ...element,
+          id: nanoid(),
           content: {
-            content: {
-              ...newContentValues,
-            },
+            content: { id: nanoid(), ...newContentValues },
           },
         };
-
-        // if (element.id === id) {
-        //   if ("content" in element && typeof element.content === "object") {
-        //     return {
-        //       ...element,
-        //       content: {
-        //         id: nanoid(),
-        //         type: elementType,
-        //         content: {
-        //           ...element.content,
-        //           content: { ...newContentValues },
-        //         },
-        //       },
-        //     };
-        //   }
-
-        //   console.log("recursiveItemReplace-2", { id });
-
-        //   return {
-        //     ...element,
-        //     content: { ...element.content, ...newContentValues },
-        //     id: nanoid(),
-        //   };
-        // }
-
-        // // Если у элемента есть `content`, рекурсивно обрабатываем его
-        // if ("content" in element && typeof element.content === "object") {
-        //   console.log({ element });
-        //   return {
-        //     ...element,
-        //     content: recursiveItemReplace(element.content),
-        //   };
-        // }
       };
 
       return items.map((item) => {
@@ -237,7 +264,7 @@ const DropZone = ({
                 content: {
                   id: nanoid(),
                   type: elementType,
-                  content: { ...newContentValues },
+                  content: { ...newContentValues.content },
                 },
               },
             };
@@ -245,7 +272,7 @@ const DropZone = ({
           // Для обычных компонентов обновляем content как раньше
           return {
             ...item,
-            content: { ...item.content, ...newContentValues },
+            content: { ...item.content, ...newContentValues.content },
             id: nanoid(),
           };
         }
@@ -294,9 +321,11 @@ const DropZone = ({
 };
 
 function App() {
-  const [screen, updateScreen] = useState<SDUIScreen>({
-    content: { type: "list", items: [] },
-  });
+  const [screen, updateScreen] = useState<SDUIScreen>(
+    test || {
+      content: { type: "list", items: [] },
+    }
+  );
 
   return (
     <DndProvider backend={HTML5Backend}>
