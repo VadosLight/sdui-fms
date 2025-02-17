@@ -5,7 +5,7 @@ import {
   renderComponent,
   RenderComponentOptions,
 } from "../../utils/renderComponent";
-import styles from "./BaseScreen.module.css"; // ✅ Импортируем стили
+import styles from "./BaseScreen.module.css";
 
 export type BaseScreenProps = {
   screen: SDUIScreen;

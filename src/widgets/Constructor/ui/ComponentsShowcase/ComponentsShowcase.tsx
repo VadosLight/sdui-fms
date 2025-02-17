@@ -18,6 +18,7 @@ export const ComponentsShowcase = () => {
         backgroundColor: "white",
         padding: 16,
         height: "100%",
+        overflow: "scroll",
       }}
     >
       <h2 style={{ color: "black" }}>Набор компонентов</h2>
