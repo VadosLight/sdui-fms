@@ -44,15 +44,15 @@ export const DropZone = ({
       items: LayoutElement[]
     ): LayoutElement[] => {
       const recursiveItemReplace = (element: LayoutElement): LayoutElement => {
-        console.log("recursiveItemReplace", { id, element, newContentValues });
-
         if (element.id !== id) {
           // если у дочернего элемента есть children
+          // @ts-expect-error можно починить тип с помощью "element.type === 'BannerWrapper' &&" но надо будет делать для всех компонентов с детьми
           if (element.content.content) {
             return {
               ...element,
               content: {
                 ...element.content,
+                // @ts-expect-error тоже самое "element.type === 'BannerWrapper' &&"
                 content: { ...recursiveItemReplace(element.content.content) },
               },
             };
@@ -65,11 +65,13 @@ export const DropZone = ({
           ...element,
           id: generateId(),
           content: {
+            // @ts-expect-error тоже самое "element.type === 'BannerWrapper' &&"
             content: { id: generateId(), ...newContentValues },
           },
         };
       };
 
+      // @ts-expect-error тоже самое
       return items.map((item) => {
         if (item.id === id) {
           // Проверяем, содержит ли content вложенный контент

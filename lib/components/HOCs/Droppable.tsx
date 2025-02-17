@@ -1,10 +1,11 @@
 import { useDrop } from "react-dnd";
 import React, { useState, useEffect, useRef } from "react";
+import { ComponentName } from "@model/types/fms/common/LayoutElement/LayoutElement";
 
 interface DroppableProps {
   id?: string;
   editMode?: boolean;
-  onDrop?: (type: string, id: string) => void;
+  onDrop?: (type: ComponentName, id: string) => void;
   children: (
     isOver: boolean,
     dropRef: React.RefObject<HTMLDivElement>
@@ -26,7 +27,7 @@ export const Droppable: React.FC<DroppableProps> = ({
       editMode && onDrop && id
         ? {
             accept: "COMPONENT",
-            drop: (item: { type: string }, monitor) => {
+            drop: (item: { type: ComponentName }, monitor) => {
               if (monitor.didDrop()) return;
               if (typeof item?.type === "string") {
                 onDrop(item.type, id);

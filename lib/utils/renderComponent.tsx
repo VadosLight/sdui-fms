@@ -1,14 +1,17 @@
 import { BannerWrapper } from "@components/BannerWrapper/BannerWrapper";
 import { ButtonView } from "@components/ButtonView/ButtonView";
 import { TextFieldView } from "@components/TextFieldView/TextFieldView";
-import { LayoutElement } from "@model/types/fms/common/LayoutElement/LayoutElement";
+import {
+  ComponentName,
+  LayoutElement,
+} from "@model/types/fms/common/LayoutElement/LayoutElement";
 import { DEFAULT_DS } from "./constants/defaults";
 import { TextLabel } from "@components/TextLabel/TextLabel";
 
 export type RenderComponentOptions = {
   designSystem?: string;
   editMode?: boolean;
-  onComponentDrop?: (elementType: string, id: string) => void;
+  onComponentDrop?: (elementType: ComponentName, id: string) => void;
 };
 
 export const renderComponent = (

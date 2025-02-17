@@ -14,7 +14,7 @@ type BuilderSpecific = {
    *  Используется только в режиме билдера
    *
    */
-  onDrop?: (itemType: string, id: string) => void;
+  onDrop?: (itemType: ComponentName, id: string) => void;
 
   // onDrop?: (item: any) => void;
 };
