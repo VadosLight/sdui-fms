@@ -21,67 +21,6 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1 } },
 });
 
-const test: SDUIScreen = {
-  content: {
-    type: "list",
-    items: [
-      {
-        id: "15c7bce301",
-        visible: true,
-        type: "BannerWrapper",
-        content: {
-          padding: 4,
-          content: {
-            id: "0fa64fb734",
-            type: "BannerWrapper",
-            content: {
-              content: {
-                type: "BannerWrapper",
-                id: "0fa6ffb734",
-                content: {
-                  padding: 4,
-                  content: {
-                    id: "0fa6ffb724",
-                    type: "ButtonView",
-                    content: { text: "Кнопка " },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      {
-        id: "e8c2e8704b",
-        visible: true,
-        type: "BannerWrapper",
-        content: {
-          padding: 4,
-          content: {
-            id: "c67ceb1ab3",
-            type: "BannerWrapper",
-            content: {
-              content: {
-                id: "6ee9bdfd88",
-                type: "BannerWrapper",
-                content: {
-                  padding: 4,
-                  content: {
-                    type: "ButtonView",
-                    content: {
-                      text: "Кнопка внутри баннера",
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    ],
-  },
-};
-
 const getDefaultsByType = (type: ComponentName) => {
   switch (type) {
     case "ButtonView":
@@ -89,6 +28,7 @@ const getDefaultsByType = (type: ComponentName) => {
         type: "ButtonView",
         content: { enabled: true, size: "large", text: "Просто кнопка" },
       } as ComponentProps<"ButtonView">;
+
     case "BannerWrapper":
       return {
         type: "BannerWrapper",
@@ -103,6 +43,7 @@ const getDefaultsByType = (type: ComponentName) => {
           },
         },
       } as ComponentProps<"BannerWrapper">;
+
     case "TextFieldView":
       return {
         type: "TextFieldView",
@@ -112,6 +53,16 @@ const getDefaultsByType = (type: ComponentName) => {
           placeholder: "Плейсхолдер",
         },
       } as ComponentProps<"TextFieldView">;
+
+    case "TextLabel":
+      return {
+        type: "TextLabel",
+        content: {
+          text: "Lorem ipsum",
+          lineLimit: 3,
+          preset: "paragraph",
+        },
+      } as ComponentProps<"TextLabel">;
   }
 
   return undefined;
@@ -141,12 +92,15 @@ const ComponentsShowcase = () => {
         }
 
         return (
-          <DraggableComponent
-            // @ts-expect-error любой зарегистрированный компонент
-            children={<Component {...props} />}
-            type={type as ComponentName}
-            key={type}
-          />
+          <div>
+            <h3>{type}</h3>
+            <DraggableComponent
+              // @ts-expect-error любой зарегистрированный компонент
+              children={<Component {...props} />}
+              type={type as ComponentName}
+              key={type}
+            />
+          </div>
         );
       })}
     </aside>
@@ -321,11 +275,9 @@ const DropZone = ({
 };
 
 function App() {
-  const [screen, updateScreen] = useState<SDUIScreen>(
-    test || {
-      content: { type: "list", items: [] },
-    }
-  );
+  const [screen, updateScreen] = useState<SDUIScreen>({
+    content: { type: "list", items: [] },
+  });
 
   return (
     <DndProvider backend={HTML5Backend}>

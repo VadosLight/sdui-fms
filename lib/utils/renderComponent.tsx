@@ -3,6 +3,7 @@ import { ButtonView } from "@components/ButtonView/ButtonView";
 import { TextFieldView } from "@components/TextFieldView/TextFieldView";
 import { LayoutElement } from "@model/types/fms/common/LayoutElement/LayoutElement";
 import { DEFAULT_DS } from "./constants/defaults";
+import { TextLabel } from "@components/TextLabel/TextLabel";
 
 export type RenderComponentOptions = {
   designSystem?: string;
@@ -36,6 +37,8 @@ export const renderComponent = (
           onDrop={onComponentDrop}
         />
       );
+    case "TextLabel":
+      return <TextLabel key={element.id} {...element} editMode={editMode} />;
     default: {
       console.error(
         // @ts-expect-error на случай, если придет шаблон новой версии, а либу еще не обновили
