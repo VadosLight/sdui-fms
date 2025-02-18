@@ -1,24 +1,25 @@
 import { getElementById } from "@features/constructor/lib/getElementById";
-import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { ComponentProps } from "@model/types/utils/ComponentProps";
-import { useStore } from "@nanostores/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { $spacings } from "@store/atoms/spacing";
 import { Spacing } from "@model/types/fms/atoms/Spacing/Spacing";
+import { useVariants } from "@features/constructor/hooks/useVariants";
+import { EditComponentFormProps } from "@features/constructor/model/types/EditComponentFormProps";
+import { IdEditor } from "@entities/constructor/ui/IdEditor/IdEditor";
 
-export type SpacingViewFromProps = {
-  screen: SDUIScreen;
-  id?: string;
-};
+export const SpacingViewFrom = (props: EditComponentFormProps) => {
+  const { screen, id = "", setNewComponent } = props;
 
-export const SpacingViewFrom = (props: SpacingViewFromProps) => {
-  const { screen, id = "" } = props;
-
-  const sizeVariants = Object.keys(useStore($spacings)["AIO"]); // TODO: useVariants
+  const sizeVariants = useVariants($spacings);
 
   const [currentElement, setElement] = useState(
     getElementById(id, screen) as ComponentProps<"SpacingView">
   );
+
+  useEffect(() => {
+    setNewComponent(currentElement);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentElement]);
 
   if (!currentElement) {
     return <>Компонент с таким айди не найден</>;
@@ -26,6 +27,8 @@ export const SpacingViewFrom = (props: SpacingViewFromProps) => {
 
   return (
     <div>
+      {/* @ts-expect-error надо поресерчить как суждать типы для сет стейтов  */}
+      <IdEditor id={currentElement.id} setElement={setElement} />
       {/* TODO: Entity  SpaceSelector */}
       <p>Размер отступа</p>
       <select

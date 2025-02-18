@@ -15,9 +15,9 @@ export const BaseScreen = (props: BaseScreenProps) => {
   const {
     designSystem = DEFAULT_DS,
     screen,
-    editMode,
-    onComponentDrop,
-    onComponentRightClick,
+    _editMode,
+    _onDrop,
+    _onRightClick,
   } = props;
 
   return (
@@ -30,9 +30,9 @@ export const BaseScreen = (props: BaseScreenProps) => {
             screen.content.items.map((element) => {
               return renderComponent(element, {
                 designSystem,
-                editMode,
-                onComponentDrop,
-                onComponentRightClick,
+                _editMode,
+                _onDrop,
+                _onRightClick,
               });
             })}
         </main>

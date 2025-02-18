@@ -11,6 +11,35 @@ import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
 import { ComponentMenu } from "../ComponentMenu/ComponentMenu";
 import { useComponentMenu } from "@widgets/constructor/hooks/useComponentMenu";
 
+const addElementToContentItems = (
+  prev: SDUIScreen,
+  newValue: LayoutElement
+): SDUIScreen => {
+  const newELement = {
+    id: generateId(),
+    visible: true,
+    ...newValue,
+  };
+
+  return {
+    ...prev,
+    content: {
+      ...prev.content,
+      items: [...prev.content.items, newELement],
+    },
+  };
+};
+
+// const removeElementFromContentItems = (prev: SDUIScreen, idToRemove: string): SDUIScreen => {
+//   return {
+//     ...prev,
+//     content: {
+//       ...prev.content,
+//       items: prev.content.items.filter((el) => el.id === idToRemove)
+//     }
+//   }
+// }
+
 export const DropZone = ({
   screen,
   updateScreen,
@@ -20,23 +49,12 @@ export const DropZone = ({
 }) => {
   const { isMenuOpen, setIsMenuOpen, component, setComponent } =
     useComponentMenu();
+
   const handleDrop = (path: string, item: LayoutElement) => {
     const newComponent = getDefaultsByType(item.type as ComponentName);
     if (!newComponent) return;
 
-    const newELement = {
-      id: generateId(),
-      visible: true,
-      ...newComponent,
-    };
-
-    updateScreen((prev) => ({
-      ...prev,
-      content: {
-        ...prev.content,
-        items: [...prev.content.items, newELement],
-      },
-    }));
+    updateScreen((prev) => addElementToContentItems(prev, newComponent));
   };
 
   const handleComponentDrop = (elementType: ComponentName, id: string) => {
@@ -53,6 +71,66 @@ export const DropZone = ({
 
       return newScreen;
     });
+  };
+
+  const handleReplaceItemById = (oldId: string, newElement: LayoutElement) => {
+    const replaceElement = (items: LayoutElement[]): LayoutElement[] => {
+      return items.map((item) => {
+        if (item.id === oldId) {
+          return { ...newElement };
+        } else if (Array.isArray(item.items)) {
+          return { ...item, items: replaceElement(item.items) }; // Рекурсивно ищем внутри массива
+        } else if (typeof item === "object" && item !== null) {
+          return Object.keys(item).reduce((acc, key) => {
+            acc[key] =
+              key === "items" && Array.isArray(item[key])
+                ? replaceElement(item[key]) // Рекурсивно ищем в объекте
+                : item[key];
+            return acc;
+          }, {} as any);
+        }
+        return item;
+      });
+    };
+
+    updateScreen((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        items: replaceElement(prev.content.items),
+      },
+    }));
+  };
+
+  const handleRemoveItemById = (idToRemove: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const removeElement = (items: any[]): any[] => {
+      return items
+        .filter((item) => item.id !== idToRemove) // Убираем элемент, если id совпадает
+        .map((item) => {
+          if (Array.isArray(item.items)) {
+            return { ...item, items: removeElement(item.items) }; // Рекурсивно ищем в массиве
+          } else if (typeof item === "object" && item !== null) {
+            return Object.keys(item).reduce((acc, key) => {
+              acc[key] =
+                key === "items" && Array.isArray(item[key])
+                  ? removeElement(item[key]) // Рекурсивно ищем в объекте
+                  : item[key];
+              return acc;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            }, {} as any);
+          }
+          return item;
+        });
+    };
+
+    updateScreen((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        items: removeElement(prev.content.items),
+      },
+    }));
   };
 
   const handleRightClick = (
@@ -89,7 +167,12 @@ export const DropZone = ({
         onClose={() => {
           setIsMenuOpen(false);
         }}
-        onSubmit={() => {
+        onRemoveElement={handleRemoveItemById}
+        onSubmit={(newElement) => {
+          const oldId = component?.id || "";
+          handleReplaceItemById(oldId, newElement);
+
+          console.log({ newElement, oldId });
           setIsMenuOpen(false);
         }}
       />
@@ -104,9 +187,9 @@ export const DropZone = ({
         >
           <BaseScreen
             screen={screen}
-            editMode
-            onComponentDrop={handleComponentDrop}
-            onComponentRightClick={handleRightClick}
+            _editMode
+            _onDrop={handleComponentDrop}
+            _onRightClick={handleRightClick}
           />
         </div>
       )}

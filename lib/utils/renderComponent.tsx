@@ -2,23 +2,16 @@ import { BannerWrapper } from "@components/BannerWrapper/BannerWrapper";
 import { ButtonView } from "@components/ButtonView/ButtonView";
 import { TextFieldView } from "@components/TextFieldView/TextFieldView";
 import { SpacingView } from "@components/SpacingView/SpacingView";
-import {
-  ComponentName,
-  LayoutElement,
-} from "@model/types/fms/common/LayoutElement/LayoutElement";
+import { LayoutElement } from "@model/types/fms/common/LayoutElement/LayoutElement";
 import { DEFAULT_DS } from "./constants/defaults";
 import { TextLabel } from "@components/TextLabel/TextLabel";
+import { Highlighted } from "@components/HOCs/Highlighted/Highlighted";
+// import { PropsWithChildren } from 'react';
+import { BuilderSpecific } from "@model/types/utils/ComponentProps";
 
 export type RenderComponentOptions = {
   designSystem?: string;
-  editMode?: boolean;
-  onComponentDrop?: (elementType: ComponentName, id: string) => void;
-  onComponentRightClick?: (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-    elementType: ComponentName,
-    id: string
-  ) => void;
-};
+} & BuilderSpecific;
 
 export const renderComponent = (
   element: LayoutElement,
@@ -26,9 +19,9 @@ export const renderComponent = (
 ) => {
   const {
     designSystem = DEFAULT_DS,
-    editMode = false,
-    onComponentDrop,
-    onComponentRightClick,
+    _editMode = false,
+    _onDrop,
+    _onRightClick,
   } = options || {};
 
   switch (element.type) {
@@ -37,8 +30,8 @@ export const renderComponent = (
         <ButtonView
           key={element.id}
           {...element}
-          _editMode={editMode}
-          _onRightClick={onComponentRightClick}
+          _editMode={_editMode}
+          _onRightClick={_onRightClick}
         />
       );
     case "TextFieldView":
@@ -46,8 +39,8 @@ export const renderComponent = (
         <TextFieldView
           key={element.id}
           {...element}
-          _editMode={editMode}
-          _onRightClick={onComponentRightClick}
+          _editMode={_editMode}
+          _onRightClick={_onRightClick}
         />
       );
     case "BannerWrapper":
@@ -55,9 +48,9 @@ export const renderComponent = (
         <BannerWrapper
           key={element.id}
           {...element}
-          _editMode={editMode}
-          _onDrop={onComponentDrop}
-          _onRightClick={onComponentRightClick}
+          _editMode={_editMode}
+          _onDrop={_onDrop}
+          _onRightClick={_onRightClick}
         />
       );
     case "TextLabel":
@@ -65,18 +58,20 @@ export const renderComponent = (
         <TextLabel
           key={element.id}
           {...element}
-          _editMode={editMode}
-          _onRightClick={onComponentRightClick}
+          _editMode={_editMode}
+          _onRightClick={_onRightClick}
         />
       );
     case "SpacingView":
       return (
-        <SpacingView
-          key={element.id}
-          {...element}
-          _editMode={editMode}
-          _onRightClick={onComponentRightClick}
-        />
+        <Highlighted>
+          <SpacingView
+            key={element.id}
+            {...element}
+            _editMode={_editMode}
+            _onRightClick={_onRightClick}
+          />
+        </Highlighted>
       );
     default: {
       console.error(

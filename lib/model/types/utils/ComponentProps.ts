@@ -4,7 +4,7 @@ import {
 } from "../fms/common/LayoutElement/LayoutElement";
 
 /** Пропсы используются только в режиме конструктора */
-type BuilderSpecific = {
+export type BuilderSpecific = {
   /**
    *  Используется только в режиме билдера
    *

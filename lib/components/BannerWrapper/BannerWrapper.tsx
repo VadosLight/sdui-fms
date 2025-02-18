@@ -30,9 +30,9 @@ export const BannerWrapper = (props: ComponentProps<"BannerWrapper">) => {
         >
           {element ? (
             renderComponent(element, {
-              editMode: _editMode,
-              onComponentDrop: _onDrop,
-              onComponentRightClick: _onRightClick,
+              _editMode,
+              _onDrop,
+              _onRightClick,
             })
           ) : _editMode ? (
             <p style={{ textAlign: "center", color: "#aaa" }}>Drop here</p>
