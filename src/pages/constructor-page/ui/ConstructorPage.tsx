@@ -1,11 +1,11 @@
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
-import { ComponentsShowcase } from "@widgets/constructor/ui/ComponentsShowcase/ComponentsShowcase";
-import { DropZone } from "@widgets/constructor/ui/ScreenPreview/ScreenPreview";
+import { ComponentsShowcase } from "@widgets/_constructor/ui/ComponentsShowcase/ComponentsShowcase";
+import { DropZone } from "@widgets/_constructor/ui/ScreenPreview/ScreenPreview";
 import { useState } from "react";
 import { DeviceFrameset } from "react-device-frameset";
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import "react-device-frameset/styles/marvel-devices.min.css";
-import { SchemaPreview } from "@entities/constructor/ui/SchemaPreview";
+import { SchemaPreview } from "@entities/_constructor/ui/SchemaPreview";
 
 export const ConstructorPage = () => {
   const [screen, updateScreen] = useState<SDUIScreen>({
