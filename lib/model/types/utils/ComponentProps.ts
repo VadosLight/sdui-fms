@@ -19,7 +19,7 @@ type BuilderSpecific = {
    * Используется только в режиме билдера, нужно для открытия меню компонента
    */
   _onRightClick?: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
     itemType: ComponentName,
     id: string
   ) => void;

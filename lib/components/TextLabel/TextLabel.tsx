@@ -6,6 +6,9 @@ import { ComponentProps } from "@model/types/utils/ComponentProps";
 
 export const TextLabel = (props: ComponentProps<"TextLabel">) => {
   const {
+    id,
+    type,
+    _onRightClick,
     content: { text, lineLimit, preset },
   } = props;
 
@@ -26,10 +29,19 @@ export const TextLabel = (props: ComponentProps<"TextLabel">) => {
     }
   }, [lineLimit]);
 
+  const handleContectClick = (
+    e: React.MouseEvent<HTMLInputElement, MouseEvent>
+  ) => {
+    if (id && _onRightClick) {
+      _onRightClick(e, type, id);
+    }
+  };
+
   if (isTitle) {
     return (
       <Typography.TitleMobile
         tag="div"
+        onContextMenu={handleContectClick}
         // view={innerTypography}
         // style={{
         //   color: innerColor,
@@ -46,6 +58,7 @@ export const TextLabel = (props: ComponentProps<"TextLabel">) => {
 
   return (
     <Typography.Text
+      onContextMenu={handleContectClick}
       //   view={innerTypography}
       //   style={{
       //     color: innerColor,

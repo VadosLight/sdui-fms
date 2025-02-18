@@ -46,6 +46,13 @@ export const getDefaultsByType = (type: ComponentName) => {
           preset: "paragraph",
         },
       } as ComponentProps<"TextLabel">;
+    case "SpacingView":
+      return {
+        type: "SpacingView",
+        content: {
+          size: "4",
+        },
+      } as ComponentProps<"SpacingView">;
   }
 
   return undefined;

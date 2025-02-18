@@ -1,6 +1,7 @@
 import { BannerWrapper } from "@components/BannerWrapper/BannerWrapper";
 import { ButtonView } from "@components/ButtonView/ButtonView";
 import { TextFieldView } from "@components/TextFieldView/TextFieldView";
+import { SpacingView } from "@components/SpacingView/SpacingView";
 import {
   ComponentName,
   LayoutElement,
@@ -13,7 +14,7 @@ export type RenderComponentOptions = {
   editMode?: boolean;
   onComponentDrop?: (elementType: ComponentName, id: string) => void;
   onComponentRightClick?: (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
     elementType: ComponentName,
     id: string
   ) => void;
@@ -32,10 +33,22 @@ export const renderComponent = (
 
   switch (element.type) {
     case "ButtonView":
-      return <ButtonView key={element.id} {...element} _editMode={editMode} />;
+      return (
+        <ButtonView
+          key={element.id}
+          {...element}
+          _editMode={editMode}
+          _onRightClick={onComponentRightClick}
+        />
+      );
     case "TextFieldView":
       return (
-        <TextFieldView key={element.id} {...element} _editMode={editMode} />
+        <TextFieldView
+          key={element.id}
+          {...element}
+          _editMode={editMode}
+          _onRightClick={onComponentRightClick}
+        />
       );
     case "BannerWrapper":
       return (
@@ -48,7 +61,23 @@ export const renderComponent = (
         />
       );
     case "TextLabel":
-      return <TextLabel key={element.id} {...element} _editMode={editMode} />;
+      return (
+        <TextLabel
+          key={element.id}
+          {...element}
+          _editMode={editMode}
+          _onRightClick={onComponentRightClick}
+        />
+      );
+    case "SpacingView":
+      return (
+        <SpacingView
+          key={element.id}
+          {...element}
+          _editMode={editMode}
+          _onRightClick={onComponentRightClick}
+        />
+      );
     default: {
       console.error(
         // @ts-expect-error на случай, если придет шаблон новой версии, а либу еще не обновили

@@ -8,53 +8,62 @@ import { generateId } from "@widgets/Constructor/lib/generateId";
 import { getDefaultsByType } from "@widgets/Constructor/lib/getDefaultsByType";
 import { updateComponentContent } from "@widgets/Constructor/lib/updateComponentContent";
 import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
+import { ComponentMenu } from "../ComponentMenu/ComponentMenu";
+import { useComponentMenu } from "@widgets/Constructor/hooks/useComponentMenu";
 
 export const DropZone = ({
   screen,
   updateScreen,
 }: {
   screen: SDUIScreen;
-  updateScreen: (s: SDUIScreen) => void;
+  updateScreen: React.Dispatch<React.SetStateAction<SDUIScreen>>;
 }) => {
+  const { isMenuOpen, setIsMenuOpen, component, setComponent } =
+    useComponentMenu();
   const handleDrop = (path: string, item: LayoutElement) => {
     const newComponent = getDefaultsByType(item.type as ComponentName);
     if (!newComponent) return;
 
-    const newScreen = { ...screen };
-    newScreen.content.items.push({
+    const newELement = {
       id: generateId(),
       visible: true,
       ...newComponent,
-    });
+    };
 
-    updateScreen(newScreen);
+    updateScreen((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        items: [...prev.content.items, newELement],
+      },
+    }));
   };
 
   const handleComponentDrop = (elementType: ComponentName, id: string) => {
-    const newScreen = structuredClone(screen);
+    updateScreen((prev) => {
+      const newScreen = prev;
 
-    if (Array.isArray(newScreen.content.items)) {
-      newScreen.content.items = updateComponentContent(
-        newScreen.content.items,
-        id,
-        elementType
-      );
-    }
+      if (Array.isArray(newScreen.content.items)) {
+        newScreen.content.items = updateComponentContent(
+          newScreen.content.items,
+          id,
+          elementType
+        );
+      }
 
-    updateScreen(newScreen);
+      return newScreen;
+    });
   };
 
   const handleRightClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
     elementType: ComponentName,
     id: string
   ) => {
     e.preventDefault();
     e.stopPropagation();
-
-    alert(
-      `Правый клик на ${id} => ${elementType} открывает модалку с настройками конкретного компонента`
-    );
+    setIsMenuOpen(true);
+    setComponent({ id, type: elementType });
   };
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -70,21 +79,36 @@ export const DropZone = ({
     }),
   }));
 
-  return drop(
-    <div
-      style={{
-        flex: 1,
-        height: "100%",
-        background: isOver ? "#00550030" : "white",
-        overflowY: "auto",
-      }}
-    >
-      <BaseScreen
-        screen={screen}
-        editMode
-        onComponentDrop={handleComponentDrop}
-        onComponentRightClick={handleRightClick}
+  return (
+    <>
+      <ComponentMenu
+        id={component?.id}
+        type={component?.type}
+        isOpen={isMenuOpen}
+        onClose={() => {
+          setIsMenuOpen(false);
+        }}
+        onSubmit={function (): void {
+          setIsMenuOpen(false);
+        }}
       />
-    </div>
+      {drop(
+        <div
+          style={{
+            flex: 1,
+            height: "100%",
+            background: isOver ? "#00550030" : "white",
+            overflowY: "auto",
+          }}
+        >
+          <BaseScreen
+            screen={screen}
+            editMode
+            onComponentDrop={handleComponentDrop}
+            onComponentRightClick={handleRightClick}
+          />
+        </div>
+      )}
+    </>
   );
 };

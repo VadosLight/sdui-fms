@@ -16,7 +16,10 @@ export const SchemaPreview = (props: SchemaPreviewProps) => {
       <textarea className={styles.textarea} value={text} />
       <Copy
         className={styles.copy}
-        onClick={() => navigator.clipboard.writeText(text)}
+        onClick={() => {
+          navigator.clipboard.writeText(text);
+          alert("SDUI схема скопирована");
+        }}
       />
     </div>
   );

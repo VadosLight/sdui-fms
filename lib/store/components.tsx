@@ -7,6 +7,7 @@ import { TextFieldView } from "@components/TextFieldView/TextFieldView";
 import { ComponentName } from "@model/types/fms/common/LayoutElement/LayoutElement";
 import { BannerWrapper } from "@components/BannerWrapper/BannerWrapper";
 import { TextLabel } from "@components/TextLabel/TextLabel";
+import { SpacingView } from "@components/SpacingView/SpacingView";
 
 type Element<T extends ComponentName> = React.ElementType<ComponentProps<T>>;
 
@@ -15,6 +16,7 @@ type DesignSystemComponents = {
   BannerWrapper: Element<"BannerWrapper">;
   TextLabel: Element<"TextLabel">;
   TextFieldView: Element<"TextFieldView">;
+  SpacingView: Element<"SpacingView">;
 };
 
 type RegisteredComponents = Record<string, DesignSystemComponents>;
@@ -25,6 +27,7 @@ export const $components = deepMap<RegisteredComponents>({
     TextFieldView: TextFieldView,
     BannerWrapper: BannerWrapper,
     TextLabel: TextLabel,
+    SpacingView: SpacingView,
   },
 });
 
@@ -40,4 +43,5 @@ registerDesignSystem("PWA", {
   TextFieldView: TextFieldView,
   BannerWrapper: BannerWrapper,
   TextLabel: TextLabel,
+  SpacingView: SpacingView,
 });
