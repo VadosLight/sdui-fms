@@ -5,7 +5,7 @@ import { useState } from "react";
 import { DeviceFrameset } from "react-device-frameset";
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import "react-device-frameset/styles/marvel-devices.min.css";
-import { SchemaPreview } from "@entities/constructor/ui/SchemaPreview";
+import { SchemaPreview } from "@entities/constructor/ui/SchemaPreview/SchemaPreview";
 
 export const ConstructorPage = () => {
   const [screen, updateScreen] = useState<SDUIScreen>({

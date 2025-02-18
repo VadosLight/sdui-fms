@@ -59,7 +59,7 @@ export const DropZone = ({
 
   const handleComponentDrop = (elementType: ComponentName, id: string) => {
     updateScreen((prev) => {
-      const newScreen = prev;
+      const newScreen = structuredClone(prev);
 
       if (Array.isArray(newScreen.content.items)) {
         newScreen.content.items = updateComponentContent(

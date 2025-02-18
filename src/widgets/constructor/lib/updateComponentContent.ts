@@ -52,7 +52,7 @@ export const updateComponentContent = (
     // Если элемент найден, заменяем его содержимое новыми значениями
     return {
       ...element,
-      id: generateId(), // Генерируем новый ID, чтобы отличить обновленный компонент
+      // id: generateId(), // Генерируем новый ID, чтобы отличить обновленный компонент
       content: {
         ...element.content,
         content: { id: generateId(), ...newContentValues },
