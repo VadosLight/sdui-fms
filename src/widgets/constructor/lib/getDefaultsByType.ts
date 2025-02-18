@@ -50,7 +50,7 @@ export const getDefaultsByType = (type: ComponentName) => {
       return {
         type: "SpacingView",
         content: {
-          size: "4",
+          size: "m",
         },
       } as ComponentProps<"SpacingView">;
   }

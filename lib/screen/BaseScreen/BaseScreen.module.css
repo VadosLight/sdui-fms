@@ -4,7 +4,12 @@
     flex-direction: column;
     height: 100%;
     /* Растягиваем контейнер на всю высоту экрана */
+    scrollbar-width: none;
+    overflow: hidden;
+
 }
+
+
 
 .header {
     /* Фиксированный заголовок */
@@ -25,7 +30,11 @@
     flex-grow: 1;
     /* Контент занимает оставшееся пространство */
     overflow-y: auto;
-    /* Прокрутка, если контент длинный */
+    scrollbar-width: none;
+}
+
+.mainContent::-webkit-scrollbar {
+    display: none;
 }
 
 .footer {

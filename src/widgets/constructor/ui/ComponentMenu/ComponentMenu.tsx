@@ -3,8 +3,10 @@ import classNames from "classnames";
 import styles from "./ComponentMenu.module.css";
 import { SidebarClose } from "lucide-react";
 import { ButtonMobile } from "@alfalab/core-components/button/mobile";
+import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 
 export type ComponentMenuProps = {
+  screen: SDUIScreen;
   id?: string;
   type?: ComponentName;
   isOpen: boolean;
@@ -25,8 +27,8 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
     >
       <div className={styles.title}>
         <SidebarClose onClick={onClose} className={styles.btnClose} />
-        <h3> {type}</h3>
-        <p> {id}</p>
+        <h3>{type}</h3>
+        <p>{id}</p>
       </div>
 
       <div className={styles.main}></div>

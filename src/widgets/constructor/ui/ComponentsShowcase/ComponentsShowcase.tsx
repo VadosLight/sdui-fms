@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { $components } from "@store/components";
 import { useDrag } from "react-dnd";
 import { DEFAULT_DS } from "../../../../../lib/utils/constants/defaults";
-import { getDefaultsByType } from "@widgets/Constructor/lib/getDefaultsByType";
+import { getDefaultsByType } from "@widgets/constructor/lib/getDefaultsByType";
 
 export const ComponentsShowcase = () => {
   const registeredComponents = useStore($components);
