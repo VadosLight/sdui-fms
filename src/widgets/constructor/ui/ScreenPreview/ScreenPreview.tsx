@@ -4,12 +4,12 @@ import {
 } from "@model/types/fms/common/LayoutElement/LayoutElement";
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { BaseScreen } from "@screen/BaseScreen/BaseScreen";
-import { generateId } from "@widgets/_constructor/lib/generateId";
-import { getDefaultsByType } from "@widgets/_constructor/lib/getDefaultsByType";
-import { updateComponentContent } from "@widgets/_constructor/lib/updateComponentContent";
+import { generateId } from "@widgets/constructor/lib/generateId";
+import { getDefaultsByType } from "@widgets/constructor/lib/getDefaultsByType";
+import { updateComponentContent } from "@widgets/constructor/lib/updateComponentContent";
 import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
 import { ComponentMenu } from "../ComponentMenu/ComponentMenu";
-import { useComponentMenu } from "@widgets/_constructor/hooks/useComponentMenu";
+import { useComponentMenu } from "@widgets/constructor/hooks/useComponentMenu";
 
 export const DropZone = ({
   screen,
