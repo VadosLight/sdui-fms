@@ -89,7 +89,7 @@ export const DropZone = ({
         onClose={() => {
           setIsMenuOpen(false);
         }}
-        onSubmit={function (): void {
+        onSubmit={() => {
           setIsMenuOpen(false);
         }}
       />

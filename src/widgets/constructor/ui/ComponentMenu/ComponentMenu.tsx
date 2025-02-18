@@ -4,6 +4,7 @@ import styles from "./ComponentMenu.module.css";
 import { SidebarClose } from "lucide-react";
 import { ButtonMobile } from "@alfalab/core-components/button/mobile";
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
+import { SpacingViewFrom } from "@features/constructor/ui/SpacingViewFrom/SpacingViewFrom";
 
 export type ComponentMenuProps = {
   screen: SDUIScreen;
@@ -15,9 +16,10 @@ export type ComponentMenuProps = {
 };
 
 export const ComponentMenu = (props: ComponentMenuProps) => {
-  const { id, isOpen, onClose, onSubmit, type } = props;
+  const { id, isOpen, onClose, onSubmit, type, screen } = props;
 
   const handleSubmit = () => {
+    // const oldId = id
     onSubmit();
   };
 
@@ -31,7 +33,9 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
         <p>{id}</p>
       </div>
 
-      <div className={styles.main}></div>
+      <div className={styles.main}>
+        {type === "SpacingView" && <SpacingViewFrom screen={screen} id={id} />}
+      </div>
 
       <div className={styles.buttons}>
         <ButtonMobile onClick={handleSubmit}>Подтвердить</ButtonMobile>

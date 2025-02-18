@@ -29,7 +29,6 @@ export const ConstructorPage = () => {
         </Panel>
         <PanelResizeHandle />
 
-        {/* <BaseScreen designSystem="AIO" screen={screen} /> */}
         <Panel defaultSize={32} minSize={25} maxSize={32}>
           <DeviceFrameset device="iPhone X" style={{ height: "100%" }}>
             <DropZone screen={screen} updateScreen={updateScreen} />
