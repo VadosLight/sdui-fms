@@ -7,8 +7,16 @@
 }
 
 .header {
-    flex-shrink: 0;
     /* Фиксированный заголовок */
+    flex-shrink: 0;
+    height: 56px;
+
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    border-bottom: 1px solid black;
+
+
 }
 
 .mainContent {
@@ -21,11 +29,11 @@
 }
 
 .footer {
+    border-top: 1px solid black;
     flex-shrink: 0;
     /* Фиксированный футер */
-    background: #222;
-    /* Цвет фона */
-    color: white;
+    background: #ffffff;
+
     /* Цвет текста */
     text-align: center;
 }

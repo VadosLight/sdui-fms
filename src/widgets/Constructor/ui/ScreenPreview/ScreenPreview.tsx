@@ -6,6 +6,7 @@ import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { BaseScreen } from "@screen/BaseScreen/BaseScreen";
 import { generateId } from "@widgets/Constructor/lib/generateId";
 import { getDefaultsByType } from "@widgets/Constructor/lib/getDefaultsByType";
+import { updateComponentContent } from "@widgets/Constructor/lib/updateComponentContent";
 import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
 
 export const DropZone = ({
@@ -15,14 +16,11 @@ export const DropZone = ({
   screen: SDUIScreen;
   updateScreen: (s: SDUIScreen) => void;
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleDrop = (path: string, item: any) => {
+  const handleDrop = (path: string, item: LayoutElement) => {
     const newComponent = getDefaultsByType(item.type as ComponentName);
     if (!newComponent) return;
 
     const newScreen = { ...screen };
-
-    // Добавляем компонент в screen.content.items
     newScreen.content.items.push({
       id: generateId(),
       visible: true,
@@ -33,81 +31,30 @@ export const DropZone = ({
   };
 
   const handleComponentDrop = (elementType: ComponentName, id: string) => {
-    console.log({ id, elementType });
-    const newContentValues = getDefaultsByType(elementType);
-    if (!newContentValues) return;
-
-    const newScreen = { ...screen };
-
-    // Функция для прохода по первому массиву items
-    const updateComponentContent = (
-      items: LayoutElement[]
-    ): LayoutElement[] => {
-      const recursiveItemReplace = (element: LayoutElement): LayoutElement => {
-        if (element.id !== id) {
-          // если у дочернего элемента есть children
-          // @ts-expect-error можно починить тип с помощью "element.type === 'BannerWrapper' &&" но надо будет делать для всех компонентов с детьми
-          if (element.content.content) {
-            return {
-              ...element,
-              content: {
-                ...element.content,
-                // @ts-expect-error тоже самое "element.type === 'BannerWrapper' &&"
-                content: { ...recursiveItemReplace(element.content.content) },
-              },
-            };
-          }
-
-          return element;
-        }
-
-        return {
-          ...element,
-          id: generateId(),
-          content: {
-            // @ts-expect-error тоже самое "element.type === 'BannerWrapper' &&"
-            content: { id: generateId(), ...newContentValues },
-          },
-        };
-      };
-
-      // @ts-expect-error тоже самое
-      return items.map((item) => {
-        if (item.id === id) {
-          // Проверяем, содержит ли content вложенный контент
-          if (
-            "content" in item.content &&
-            typeof item.content.content === "object"
-          ) {
-            return {
-              ...item,
-              content: {
-                ...item.content,
-                content: {
-                  id: generateId(),
-                  type: elementType,
-                  content: { ...newContentValues.content },
-                },
-              },
-            };
-          }
-          // Для обычных компонентов обновляем content как раньше
-          return {
-            ...item,
-            content: { ...item.content, ...newContentValues.content },
-            id: generateId(),
-          };
-        }
-
-        return recursiveItemReplace(item);
-      });
-    };
+    const newScreen = structuredClone(screen);
 
     if (Array.isArray(newScreen.content.items)) {
-      newScreen.content.items = updateComponentContent(newScreen.content.items);
+      newScreen.content.items = updateComponentContent(
+        newScreen.content.items,
+        id,
+        elementType
+      );
     }
 
     updateScreen(newScreen);
+  };
+
+  const handleRightClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    elementType: ComponentName,
+    id: string
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    alert(
+      `Правый клик на ${id} => ${elementType} открывает модалку с настройками конкретного компонента`
+    );
   };
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -116,11 +63,10 @@ export const DropZone = ({
       if (monitor.didDrop()) {
         return;
       }
-
-      handleDrop("content.items", item);
+      handleDrop("content.items", item as LayoutElement);
     },
     collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
+      isOver: monitor.isOver(),
     }),
   }));
 
@@ -129,7 +75,7 @@ export const DropZone = ({
       style={{
         flex: 1,
         height: "100%",
-        background: isOver ? "#050" : "white",
+        background: isOver ? "#00550030" : "white",
         overflowY: "auto",
       }}
     >
@@ -137,6 +83,7 @@ export const DropZone = ({
         screen={screen}
         editMode
         onComponentDrop={handleComponentDrop}
+        onComponentRightClick={handleRightClick}
       />
     </div>
   );

@@ -17,12 +17,14 @@ export const BaseScreen = (props: BaseScreenProps) => {
     screen,
     editMode,
     onComponentDrop,
+    onComponentRightClick,
   } = props;
 
   return (
-    <div className={styles.baseScreenContainer}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <header className={styles.header}>Header</header>{" "}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className={styles.baseScreenContainer}>
+        <header className={styles.header}>Header</header>
+
         <main className={styles.mainContent}>
           {screen?.content.type === "list" &&
             screen.content.items.map((element) => {
@@ -30,57 +32,13 @@ export const BaseScreen = (props: BaseScreenProps) => {
                 designSystem,
                 editMode,
                 onComponentDrop,
+                onComponentRightClick,
               });
             })}
         </main>
-        <footer className={styles.footer}>Footer</footer>{" "}
-      </Suspense>
-    </div>
+
+        <footer className={styles.footer}>Footer</footer>
+      </div>
+    </Suspense>
   );
 };
-
-// const getScreen = async (endpoint: string): Promise<SDUIScreen> => {
-//   // const response =  axios.get(endpoint);
-
-//   const response: SDUIScreen = {
-//     content: {
-//       type: "list",
-//       items: [
-//         {
-//           id: "123",
-//           type: "ButtonView",
-//           content: {
-//             text: "Hello world",
-//           },
-//         },
-//         {
-//           type: "TextFieldView",
-//           content: {
-//             text: "text test",
-//           },
-//         },
-//         {
-//           type: "BannerWrapper",
-//           content: {
-//             padding: 16,
-//             content: {
-//               type: "ButtonView",
-//               content: {
-//                 text: "Я внутри BannerWrapper",
-//               },
-//             },
-//           },
-//         },
-//       ],
-//     },
-//   };
-
-//   return response;
-// };
-
-// const useScreen = (endpoint: string) => {
-//   return useQuery({
-//     queryKey: [endpoint],
-//     queryFn: () => getScreen(endpoint),
-//   });
-// };

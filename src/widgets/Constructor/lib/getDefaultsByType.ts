@@ -14,9 +14,12 @@ export const getDefaultsByType = (type: ComponentName) => {
         type: "BannerWrapper",
         content: {
           padding: 4,
+          style: {
+            backgroundColor: "transparent",
+            style: "fill",
+          },
           content: {
             type: "ButtonView",
-
             content: {
               text: "Кнопка внутри баннера",
             },

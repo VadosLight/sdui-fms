@@ -30,7 +30,7 @@ export const ComponentsShowcase = () => {
         }
 
         return (
-          <div>
+          <div key={type}>
             <h3>{type}</h3>
             <DraggableComponent
               // @ts-expect-error любой зарегистрированный компонент
