@@ -6,20 +6,27 @@ import { DeviceFrameset } from "react-device-frameset";
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import "react-device-frameset/styles/marvel-devices.min.css";
 import { SchemaPreview } from "@entities/constructor/ui/SchemaPreview/SchemaPreview";
+import { ConstructorHeader } from "@widgets/constructor/ui/ConstructorHeader/ConstructorHeader";
+import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 export const ConstructorPage = () => {
-  const [screen, updateScreen] = useState<SDUIScreen>({
+  const [screen, updateScreen] = useState<DeepReadonly<SDUIScreen>>({
     content: { type: "list", items: [] },
   });
 
   return (
-    <>
+    <div
+      style={{
+        height: "100dvh",
+        padding: "4px 32px",
+      }}
+    >
+      <ConstructorHeader screen={screen} />
       <PanelGroup
         direction="horizontal"
         autoSaveId={"sdui"}
         style={{
-          height: "100dvh",
-          padding: 32,
+          // height: "100%",
           boxSizing: "border-box",
           gap: 4,
         }}
@@ -40,6 +47,6 @@ export const ConstructorPage = () => {
           <SchemaPreview screen={screen} />
         </Panel>
       </PanelGroup>
-    </>
+    </div>
   );
 };

@@ -6,9 +6,10 @@ import {
   RenderComponentOptions,
 } from "../../utils/renderComponent";
 import styles from "./BaseScreen.module.css";
+import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 export type BaseScreenProps = {
-  screen: SDUIScreen;
+  screen: DeepReadonly<SDUIScreen>;
 } & RenderComponentOptions;
 
 export const BaseScreen = (props: BaseScreenProps) => {

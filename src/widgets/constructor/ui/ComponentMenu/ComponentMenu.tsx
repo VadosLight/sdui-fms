@@ -9,9 +9,10 @@ import { ButtonMobile } from "@alfalab/core-components/button/mobile";
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { SpacingViewFrom } from "@features/constructor/ui/SpacingViewFrom/SpacingViewFrom";
 import { useState } from "react";
+import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 export type ComponentMenuProps = {
-  screen: SDUIScreen;
+  screen: DeepReadonly<SDUIScreen>;
   id?: string;
   type?: ComponentName;
   isOpen: boolean;

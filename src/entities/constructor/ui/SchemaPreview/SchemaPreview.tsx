@@ -1,9 +1,10 @@
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import styles from "./SchemaPreview.module.css";
 import { Copy } from "lucide-react";
+import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 export type SchemaPreviewProps = {
-  screen: SDUIScreen;
+  screen: DeepReadonly<SDUIScreen>;
 };
 
 export const SchemaPreview = (props: SchemaPreviewProps) => {

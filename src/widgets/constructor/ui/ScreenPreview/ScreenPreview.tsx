@@ -10,9 +10,10 @@ import { updateComponentContent } from "@widgets/constructor/lib/updateComponent
 import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
 import { ComponentMenu } from "../ComponentMenu/ComponentMenu";
 import { useComponentMenu } from "@widgets/constructor/hooks/useComponentMenu";
+import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 const addElementToContentItems = (
-  prev: SDUIScreen,
+  prev: DeepReadonly<SDUIScreen>,
   newValue: LayoutElement
 ): SDUIScreen => {
   const newELement = {
@@ -44,8 +45,8 @@ export const DropZone = ({
   screen,
   updateScreen,
 }: {
-  screen: SDUIScreen;
-  updateScreen: React.Dispatch<React.SetStateAction<SDUIScreen>>;
+  screen: DeepReadonly<SDUIScreen>;
+  updateScreen: React.Dispatch<React.SetStateAction<DeepReadonly<SDUIScreen>>>;
 }) => {
   const { isMenuOpen, setIsMenuOpen, component, setComponent } =
     useComponentMenu();
@@ -74,7 +75,9 @@ export const DropZone = ({
   };
 
   const handleReplaceItemById = (oldId: string, newElement: LayoutElement) => {
-    const replaceElement = (items: LayoutElement[]): LayoutElement[] => {
+    const replaceElement = (
+      items: DeepReadonly<LayoutElement[]>
+    ): LayoutElement[] => {
       return items.map((item) => {
         if (item.id === oldId) {
           return { ...newElement };
@@ -128,7 +131,8 @@ export const DropZone = ({
       ...prev,
       content: {
         ...prev.content,
-        items: removeElement(prev.content.items),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        items: removeElement(prev.content.items as any),
       },
     }));
   };

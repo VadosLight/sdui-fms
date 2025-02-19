@@ -1,12 +1,13 @@
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { LayoutElement } from "../../../../lib/model/types/fms/common/LayoutElement/LayoutElement";
+import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 export const getElementById = (
   id: string,
-  screen: SDUIScreen
+  screen: DeepReadonly<SDUIScreen>
 ): LayoutElement | null => {
   const searchElement = (
-    element: SDUIScreen | LayoutElement
+    element: DeepReadonly<SDUIScreen | LayoutElement>
   ): LayoutElement | null => {
     if (!element || typeof element !== "object") return null;
 

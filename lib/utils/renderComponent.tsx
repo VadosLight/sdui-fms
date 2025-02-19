@@ -6,7 +6,6 @@ import { LayoutElement } from "@model/types/fms/common/LayoutElement/LayoutEleme
 import { DEFAULT_DS } from "./constants/defaults";
 import { TextLabel } from "@components/TextLabel/TextLabel";
 import { Highlighted } from "@components/HOCs/Highlighted/Highlighted";
-// import { PropsWithChildren } from 'react';
 import { BuilderSpecific } from "@model/types/utils/ComponentProps";
 
 export type RenderComponentOptions = {
@@ -64,7 +63,11 @@ export const renderComponent = (
       );
     case "SpacingView":
       return (
-        <Highlighted>
+        <Highlighted
+          _editMode={_editMode}
+          _onDrop={_onDrop}
+          _onRightClick={_onRightClick}
+        >
           <SpacingView
             key={element.id}
             {...element}
