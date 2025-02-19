@@ -16,7 +16,7 @@ export const ConstructorHeader = (props: ConstructorHeaderProps) => {
   return (
     <header style={{ display: "flex", gap: 8, padding: "4px 0" }}>
       <ButtonMobile
-        size={"xxs"}
+        size={"s"}
         view="primary"
         onClick={() => setPreviewOpen(true)}
       >
