@@ -86,7 +86,9 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
       </div>
 
       <div className={styles.buttons}>
-        <ButtonMobile onClick={onClose}>Отмена</ButtonMobile>
+        <ButtonMobile onClick={onClose} block>
+          Закрыть
+        </ButtonMobile>
       </div>
     </aside>
   );

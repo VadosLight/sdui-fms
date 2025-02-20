@@ -8,6 +8,11 @@ export const ImageView = (props: ComponentProps<"ImageView">) => {
       style={{ width: "100%" }}
       alt=""
       src={content.image.url}
+      onContextMenu={(e) => {
+        if (id && _onRightClick) {
+          _onRightClick(e, type, id);
+        }
+      }}
 
       // className={backgroundImageScaleClassName}
       // height={IMAGE_SIZE[size]}
