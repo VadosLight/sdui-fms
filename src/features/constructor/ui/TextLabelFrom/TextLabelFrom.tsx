@@ -1,19 +1,14 @@
 import { getElementById } from "@features/constructor/lib/getElementById";
 import { ComponentProps } from "@model/types/utils/ComponentProps";
 import { useEffect, useState } from "react";
-import { $spacings } from "@store/atoms/spacing";
-import { Spacing } from "@model/types/fms/atoms/Spacing/Spacing";
-import { useVariants } from "@features/constructor/hooks/useVariants";
 import { EditComponentFormProps } from "@features/constructor/model/types/EditComponentFormProps";
 import { IdEditor } from "@entities/constructor/ui/IdEditor/IdEditor";
 
-export const SpacingViewFrom = (props: EditComponentFormProps) => {
+export const TextLabelFrom = (props: EditComponentFormProps) => {
   const { screen, id = "", setNewComponent } = props;
 
-  const sizeVariants = useVariants($spacings);
-
   const [currentElement, setElement] = useState(
-    getElementById(id, screen) as ComponentProps<"SpacingView">
+    getElementById(id, screen) as ComponentProps<"TextLabel">
   );
 
   useEffect(() => {
@@ -31,22 +26,17 @@ export const SpacingViewFrom = (props: EditComponentFormProps) => {
       <IdEditor id={currentElement.id} setElement={setElement} />
       {/* TODO: Entity  SpaceSelector */}
       <div>
-        <p>Размер отступа</p>
-        <select
-          value={currentElement.content.size}
+        <label htmlFor={id}>Текст</label>
+        <input
+          value={currentElement.content.text}
+          id={id}
           onChange={(e) => {
             setElement((prev) => ({
               ...prev,
-              content: { ...prev.content, size: e.target.value as Spacing },
+              content: { ...prev.content, text: e.target.value },
             }));
           }}
-        >
-          {sizeVariants.map((val) => (
-            <option value={val} key={val}>
-              {val}
-            </option>
-          ))}
-        </select>
+        />
       </div>
     </div>
   );

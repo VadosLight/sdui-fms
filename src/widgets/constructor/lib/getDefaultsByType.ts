@@ -53,6 +53,15 @@ export const getDefaultsByType = (type: ComponentName) => {
           size: "m",
         },
       } as ComponentProps<"SpacingView">;
+    case "ImageView":
+      return {
+        type: "ImageView",
+        content: {
+          image: {
+            url: "https://preview.redd.it/co92k3bquj071.jpg?auto=webp&s=1d3a710a8c5109de888f5031b1b490ad2b016403",
+          },
+        },
+      } as ComponentProps<"ImageView">;
   }
 
   return undefined;

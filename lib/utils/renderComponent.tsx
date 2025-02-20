@@ -7,6 +7,7 @@ import { DEFAULT_DS } from "./constants/defaults";
 import { TextLabel } from "@components/TextLabel/TextLabel";
 import { Highlighted } from "@components/HOCs/Highlighted/Highlighted";
 import { BuilderSpecific } from "@model/types/utils/ComponentProps";
+import { ImageView } from "@components/ImageView/ImageView";
 
 export type RenderComponentOptions = {
   designSystem?: string;
@@ -69,6 +70,21 @@ export const renderComponent = (
           _onRightClick={_onRightClick}
         >
           <SpacingView
+            key={element.id}
+            {...element}
+            _editMode={_editMode}
+            _onRightClick={_onRightClick}
+          />
+        </Highlighted>
+      );
+    case "ImageView":
+      return (
+        <Highlighted
+          _editMode={_editMode}
+          _onDrop={_onDrop}
+          _onRightClick={_onRightClick}
+        >
+          <ImageView
             key={element.id}
             {...element}
             _editMode={_editMode}

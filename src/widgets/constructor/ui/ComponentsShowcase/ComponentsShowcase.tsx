@@ -4,24 +4,15 @@ import { $components } from "@store/components";
 import { useDrag } from "react-dnd";
 import { DEFAULT_DS } from "../../../../../lib/utils/constants/defaults";
 import { getDefaultsByType } from "@widgets/constructor/lib/getDefaultsByType";
+import styles from "./ComponentsShowcase.module.css";
 
 export const ComponentsShowcase = () => {
   const registeredComponents = useStore($components);
   const componentList = Object.entries(registeredComponents[DEFAULT_DS]);
 
   return (
-    <aside
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        backgroundColor: "white",
-        padding: 16,
-        height: "100%",
-        overflow: "scroll",
-      }}
-    >
-      <h2 style={{ color: "black" }}>Набор компонентов</h2>
+    <aside className={styles.wrapper}>
+      <h2 className={styles.header}>Набор компонентов</h2>
       {componentList.map(([type, Component]) => {
         const props = getDefaultsByType(type as ComponentName);
 

@@ -35,7 +35,14 @@ export const ConstructorPage = () => {
         justifyContent: " space-between",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 12,
+          gap: 16,
+        }}
+      >
         <ConstructorHeader screen={screen} />
         <InputMobile
           value={prompt}
@@ -55,9 +62,11 @@ export const ConstructorPage = () => {
               { prompt, screen: JSON.stringify(screen) },
               {
                 onSuccess: (resultText) => {
+                  console.log({ resultText });
                   const parsed = JSON.parse(resultText || "");
                   updateScreen(parsed);
                 },
+                onError: console.error,
               }
             );
 
@@ -77,6 +86,9 @@ export const ConstructorPage = () => {
           height: "100%",
           boxSizing: "border-box",
           gap: 4,
+          background: "white",
+          padding: "32px 16px",
+          borderRadius: "16px",
         }}
       >
         <Panel defaultSize={30} minSize={20}>

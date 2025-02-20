@@ -3,6 +3,7 @@ import { ButtonView } from "../../components/ButtonView/ButtonView";
 import { TextFieldView } from "../../components/TextFieldView/TextFieldView";
 import { SpacingView } from "../../components/SpacingView/SpacingView";
 import { TextLabel } from "../../components/TextLabel/TextLabel";
+import { ImageView } from "../../components/ImageView/ImageView";
 import { LayoutElementContent } from "./LayoutElementContent";
 
 export type ComponentName =
@@ -10,6 +11,7 @@ export type ComponentName =
   | "TextFieldView"
   | "BannerWrapper"
   | "SpacingView"
+  | "ImageView"
   | "TextLabel";
 
 type LayoutElementBase = {
@@ -27,4 +29,5 @@ export type LayoutElement =
   | NamedLayoutElement<"BannerWrapper", BannerWrapper>
   | NamedLayoutElement<"TextLabel", TextLabel>
   | NamedLayoutElement<"SpacingView", SpacingView>
+  | NamedLayoutElement<"ImageView", ImageView>
   | NamedLayoutElement<"TextFieldView", TextFieldView>;

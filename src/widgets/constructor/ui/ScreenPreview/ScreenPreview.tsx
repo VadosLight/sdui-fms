@@ -11,6 +11,7 @@ import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
 import { ComponentMenu } from "../ComponentMenu/ComponentMenu";
 import { useComponentMenu } from "@widgets/constructor/hooks/useComponentMenu";
 import { DeepReadonly } from "@shared/utils/DeepReadonly";
+import { ErrorBoundary } from "react-error-boundary";
 
 const addElementToContentItems = (
   prev: DeepReadonly<SDUIScreen>,
@@ -173,30 +174,47 @@ export const DropZone = ({
         }}
         onRemoveElement={handleRemoveItemById}
         onSubmit={(newElement) => {
+          // Если у нового компонента нет id, то игнорируем событие
+          if (!newElement.id) {
+            return;
+          }
           const oldId = component?.id || "";
           handleReplaceItemById(oldId, newElement);
+          setComponent({
+            id: newElement.id,
+            type: newElement.type,
+          });
 
           console.log({ newElement, oldId });
-          setIsMenuOpen(false);
+          // setIsMenuOpen(false);
         }}
       />
-      {drop(
-        <div
-          style={{
-            flex: 1,
-            height: "100%",
-            background: isOver ? "#00550030" : "white",
-            overflowY: "auto",
-          }}
-        >
-          <BaseScreen
-            screen={screen}
-            _editMode
-            _onDrop={handleComponentDrop}
-            _onRightClick={handleRightClick}
-          />
-        </div>
-      )}
+      <ErrorBoundary
+        fallback={
+          <h3>
+            Произошла ошибка, наша модель еще плохо обучена. Пожалуйста
+            перезагрузите страницу
+          </h3>
+        }
+      >
+        {drop(
+          <div
+            style={{
+              flex: 1,
+              height: "100%",
+              background: isOver ? "#00550030" : "white",
+              overflowY: "auto",
+            }}
+          >
+            <BaseScreen
+              screen={screen}
+              _editMode
+              _onDrop={handleComponentDrop}
+              _onRightClick={handleRightClick}
+            />
+          </div>
+        )}
+      </ErrorBoundary>
     </>
   );
 };

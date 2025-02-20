@@ -21,7 +21,7 @@
 .menuOpen {
     visibility: visible;
     min-width: 300px;
-    max-width: 500px;
+    max-width: 700px;
 }
 
 .title {
@@ -42,6 +42,6 @@
 .buttons {
     flex-shrink: 1;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 4px;
 }

@@ -4,12 +4,14 @@ import {
 } from "@model/types/fms/common/LayoutElement/LayoutElement";
 import classNames from "classnames";
 import styles from "./ComponentMenu.module.css";
-import { DeleteIcon, SidebarClose } from "lucide-react";
+import { DeleteIcon } from "lucide-react";
 import { ButtonMobile } from "@alfalab/core-components/button/mobile";
 import { SDUIScreen } from "@model/types/fms/screen/screen/SDUIScreen";
 import { SpacingViewFrom } from "@features/constructor/ui/SpacingViewFrom/SpacingViewFrom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeepReadonly } from "@shared/utils/DeepReadonly";
+import { useUpdateEffect } from "react-use";
+import { TextLabelFrom } from "@features/constructor/ui/TextLabelFrom/TextLabelFrom";
 
 export type ComponentMenuProps = {
   screen: DeepReadonly<SDUIScreen>;
@@ -29,13 +31,25 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
     {} as LayoutElement
   );
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   if (!newComponent) {
+  //     return;
+  //   }
+  //   // const oldId = id
+  //   onSubmit(newComponent);
+  // };
+
+  useEffect(() => {
+    setNewComponent({} as LayoutElement);
+  }, [id]);
+
+  useUpdateEffect(() => {
     if (!newComponent) {
       return;
     }
     // const oldId = id
     onSubmit(newComponent);
-  };
+  }, [newComponent]);
 
   if (!id) {
     return <></>;
@@ -46,7 +60,7 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
       className={classNames(styles.menu, { [styles.menuOpen]: id && isOpen })}
     >
       <div className={styles.title}>
-        <SidebarClose onClick={onClose} className={styles.btnClose} />
+        {/* <SidebarClose onClick={onClose} className={styles.btnClose} /> */}
         <h3>{type}</h3>
         <p>{id}</p>
         <DeleteIcon onClick={() => onRemoveElement(id)} />
@@ -55,6 +69,15 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
       <div className={styles.main}>
         {type === "SpacingView" && (
           <SpacingViewFrom
+            key={id}
+            screen={screen}
+            id={id}
+            setNewComponent={setNewComponent}
+          />
+        )}
+        {type === "TextLabel" && (
+          <TextLabelFrom
+            key={id}
             screen={screen}
             id={id}
             setNewComponent={setNewComponent}
@@ -63,9 +86,6 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
       </div>
 
       <div className={styles.buttons}>
-        <ButtonMobile onClick={handleSubmit} disabled={!newComponent}>
-          Подтвердить
-        </ButtonMobile>
         <ButtonMobile onClick={onClose}>Отмена</ButtonMobile>
       </div>
     </aside>
