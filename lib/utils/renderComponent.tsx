@@ -97,7 +97,8 @@ export const renderComponent = (
         // @ts-expect-error на случай, если придет шаблон новой версии, а либу еще не обновили
         `Component ${element.type} is not registered in the design system ${designSystem} `
       );
-      return null;
+      // Чтобы компоненты не оставались пустыми
+      return <div style={{ height: 24, width: 24 }} />;
     }
   }
 };
