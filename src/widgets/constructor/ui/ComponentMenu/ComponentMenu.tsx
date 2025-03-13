@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { DeepReadonly } from "@shared/utils/DeepReadonly";
 import { useUpdateEffect } from "react-use";
 import { TextLabelFrom } from "@features/constructor/ui/TextLabelFrom/TextLabelFrom";
+import { StackWrapperForm } from "@features/constructor/ui/StackWrapperForm/StackWrapperForm";
 
 export type ComponentMenuProps = {
   screen: DeepReadonly<SDUIScreen>;
@@ -77,6 +78,14 @@ export const ComponentMenu = (props: ComponentMenuProps) => {
         )}
         {type === "TextLabel" && (
           <TextLabelFrom
+            key={id}
+            screen={screen}
+            id={id}
+            setNewComponent={setNewComponent}
+          />
+        )}
+        {type === "StackWrapper" && (
+          <StackWrapperForm
             key={id}
             screen={screen}
             id={id}

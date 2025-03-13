@@ -9,7 +9,7 @@ export const BannerWrapper = (props: ComponentProps<"BannerWrapper">) => {
   const { content: element, padding } = content;
 
   return (
-    <Droppable id={id} editMode={_editMode} onDrop={_onDrop}>
+    <Droppable id={id} editMode={_editMode} onDrop={_onDrop} shouldReplace={true}>
       {(isOver, dropRef) => (
         <Underlay
           onContextMenu={(e) => {

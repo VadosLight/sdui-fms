@@ -62,6 +62,19 @@ export const getDefaultsByType = (type: ComponentName) => {
           },
         },
       } as ComponentProps<"ImageView">;
+    case "StackWrapper":
+      return {
+        type: "StackWrapper",
+        content: {
+          axis: "vertical",
+          horizontalAlignment: "center",
+          verticalAlignment: "center",
+          distribution: "fill",
+          spacing: 'xl',
+          padding: "m",
+          children: [],
+        },
+      } as ComponentProps<"StackWrapper">;
   }
 
   return undefined;

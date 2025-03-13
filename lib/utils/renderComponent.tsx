@@ -8,6 +8,7 @@ import { TextLabel } from "@components/TextLabel/TextLabel";
 import { Highlighted } from "@components/HOCs/Highlighted/Highlighted";
 import { BuilderSpecific } from "@model/types/utils/ComponentProps";
 import { ImageView } from "@components/ImageView/ImageView";
+import { StackWrapper } from "@components/StackWrapper/StackWrapper";
 
 export type RenderComponentOptions = {
   designSystem?: string;
@@ -91,6 +92,16 @@ export const renderComponent = (
             _onRightClick={_onRightClick}
           />
         </Highlighted>
+      );
+    case "StackWrapper":
+      return (
+        <StackWrapper
+          key={element.id}
+          {...element}
+          _editMode={_editMode}
+          _onDrop={_onDrop}
+          _onRightClick={_onRightClick}
+        />
       );
     default: {
       console.error(

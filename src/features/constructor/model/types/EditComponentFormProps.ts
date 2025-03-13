@@ -4,6 +4,6 @@ import { DeepReadonly } from "@shared/utils/DeepReadonly";
 
 export type EditComponentFormProps = {
   screen: DeepReadonly<SDUIScreen>;
-  id?: string;
+  id: string;
   setNewComponent: React.Dispatch<React.SetStateAction<LayoutElement>>;
 };

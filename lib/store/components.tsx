@@ -9,6 +9,7 @@ import { BannerWrapper } from "@components/BannerWrapper/BannerWrapper";
 import { TextLabel } from "@components/TextLabel/TextLabel";
 import { SpacingView } from "@components/SpacingView/SpacingView";
 import { ImageView } from "@components/ImageView/ImageView";
+import { StackWrapper } from "@components/StackWrapper/StackWrapper";
 
 type Element<T extends ComponentName> = React.ElementType<ComponentProps<T>>;
 
@@ -19,6 +20,7 @@ type DesignSystemComponents = {
   TextFieldView: Element<"TextFieldView">;
   SpacingView: Element<"SpacingView">;
   ImageView: Element<"ImageView">;
+  StackWrapper: Element<"StackWrapper">;
 };
 
 type RegisteredComponents = Record<string, DesignSystemComponents>;
@@ -31,6 +33,7 @@ export const $components = deepMap<RegisteredComponents>({
     TextLabel: TextLabel,
     ImageView: ImageView,
     SpacingView: SpacingView,
+    StackWrapper: StackWrapper,
   },
 });
 
@@ -48,4 +51,5 @@ registerDesignSystem("PWA", {
   TextLabel: TextLabel,
   SpacingView: SpacingView,
   ImageView: ImageView,
+  StackWrapper: StackWrapper,
 });

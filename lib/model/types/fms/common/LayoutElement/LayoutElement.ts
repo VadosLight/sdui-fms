@@ -4,6 +4,7 @@ import { TextFieldView } from "../../components/TextFieldView/TextFieldView";
 import { SpacingView } from "../../components/SpacingView/SpacingView";
 import { TextLabel } from "../../components/TextLabel/TextLabel";
 import { ImageView } from "../../components/ImageView/ImageView";
+import { StackWrapper } from "../../components/StackWrapper/StackWrapper";
 import { LayoutElementContent } from "./LayoutElementContent";
 
 export type ComponentName =
@@ -12,7 +13,8 @@ export type ComponentName =
   | "BannerWrapper"
   | "SpacingView"
   | "ImageView"
-  | "TextLabel";
+  | "TextLabel"
+  | "StackWrapper";
 
 type LayoutElementBase = {
   id?: string;
@@ -30,4 +32,5 @@ export type LayoutElement =
   | NamedLayoutElement<"TextLabel", TextLabel>
   | NamedLayoutElement<"SpacingView", SpacingView>
   | NamedLayoutElement<"ImageView", ImageView>
-  | NamedLayoutElement<"TextFieldView", TextFieldView>;
+  | NamedLayoutElement<"TextFieldView", TextFieldView>
+  | NamedLayoutElement<"StackWrapper", StackWrapper>;

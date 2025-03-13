@@ -17,7 +17,7 @@ export const ComponentsShowcase = () => {
         const props = getDefaultsByType(type as ComponentName);
 
         if (!props) {
-          return <></>;
+          return null;
         }
 
         return (

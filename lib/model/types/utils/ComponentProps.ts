@@ -14,7 +14,7 @@ export type BuilderSpecific = {
    *  Используется только в режиме билдера, нужно для работы DnD
    *
    */
-  _onDrop?: (itemType: ComponentName, id: string) => void;
+  _onDrop?: (itemType: ComponentName, id: string, shouldReplace: boolean) => void;
   /**
    * Используется только в режиме билдера, нужно для открытия меню компонента
    */

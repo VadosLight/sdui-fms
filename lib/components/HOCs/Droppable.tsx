@@ -5,11 +5,13 @@ import { ComponentName } from "@model/types/fms/common/LayoutElement/LayoutEleme
 interface DroppableProps {
   id?: string;
   editMode?: boolean;
-  onDrop?: (type: ComponentName, id: string) => void;
+  onDrop?: (type: ComponentName, id: string, shouldReplace: boolean) => void;
   children: (
     isOver: boolean,
-    dropRef: React.RefObject<HTMLDivElement>
+    dropRef: React.RefObject<HTMLDivElement>,
+    shouldReplace: boolean
   ) => React.ReactNode;
+  shouldReplace?: boolean;
 }
 
 export const Droppable: React.FC<DroppableProps> = ({
@@ -17,6 +19,7 @@ export const Droppable: React.FC<DroppableProps> = ({
   editMode,
   onDrop,
   children,
+  shouldReplace = false,
 }) => {
   const dropRef = useRef<HTMLDivElement>(null);
   const [isOver, setIsOver] = useState(false);
@@ -30,7 +33,7 @@ export const Droppable: React.FC<DroppableProps> = ({
             drop: (item: { type: ComponentName }, monitor) => {
               if (monitor.didDrop()) return;
               if (typeof item?.type === "string") {
-                onDrop(item.type, id);
+                onDrop(item.type, id, shouldReplace);
               }
             },
             collect: (monitor) => ({
@@ -55,5 +58,5 @@ export const Droppable: React.FC<DroppableProps> = ({
 
   drop(dropRef); // Применяем ref без обертки
 
-  return children(isOver, dropRef);
+  return children(isOver, dropRef, shouldReplace);
 };

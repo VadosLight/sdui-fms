@@ -6,9 +6,10 @@ import { Spacing } from "@model/types/fms/atoms/Spacing/Spacing";
 import { useVariants } from "@features/constructor/hooks/useVariants";
 import { EditComponentFormProps } from "@features/constructor/model/types/EditComponentFormProps";
 import { IdEditor } from "@entities/constructor/ui/IdEditor/IdEditor";
+import { LayoutElement } from "@model/types/fms/common/LayoutElement/LayoutElement";
 
 export const SpacingViewFrom = (props: EditComponentFormProps) => {
-  const { screen, id = "", setNewComponent } = props;
+  const { screen, id, setNewComponent } = props;
 
   const sizeVariants = useVariants($spacings);
 
@@ -27,8 +28,10 @@ export const SpacingViewFrom = (props: EditComponentFormProps) => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      {/* @ts-expect-error надо поресерчить как суждать типы для сет стейтов  */}
-      <IdEditor id={currentElement.id} setElement={setElement} />
+      <IdEditor
+        id={currentElement.id}
+        setElement={setElement as React.Dispatch<React.SetStateAction<LayoutElement>>}
+      />
       {/* TODO: Entity  SpaceSelector */}
       <div>
         <p>Размер отступа</p>
